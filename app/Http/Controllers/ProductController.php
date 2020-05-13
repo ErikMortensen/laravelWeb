@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     
     public function index(){
 
@@ -50,21 +54,21 @@ class ProductController extends Controller
     }
 
     
-    public function show($product){
+    public function show(Product $product){
         
         return view('products.show')->with([
-            'product' => Product::findOrFail($product),
+            'product' => $product,
         ]);
     }
 
-    public function edit($product){
+    public function edit(Product $product){
 
         return view('products.edit')->with([
-            'product' => Product::findOrFail($product),
+            'product' => $product,
         ]);
     }
 
-    public function update($product){
+    public function update(Product $product){
         $rules = [
             'title' => ['required', 'max:255'],
             'description' => ['required', 'max:1000'],
@@ -75,8 +79,6 @@ class ProductController extends Controller
         
         request()->validate($rules);
         
-        $product = Product::findOrFail($product);
-
         $product->update(request()->all());
 
         return redirect()
@@ -84,9 +86,8 @@ class ProductController extends Controller
             ->withSuccess("The product with id {$product->id} was edited");
     }
 
-    public function destroy($product){
-        $product = Product::findOrFail($product);
-
+    public function destroy(Product $product){
+        
         $product->delete();
         
         return redirect()
