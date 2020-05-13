@@ -10,7 +10,7 @@
 
         <div class="form-row">
             <label>Title</label>
-            <input class="form-control" type="text" name="title" value="{{ old('title') }}" >
+            <input class="form-control" type="text" name="title" value="{{ old('title') }}" required>
         </div>
         <div class="form-row">
             <label>Description</label>
